@@ -106,9 +106,11 @@ void addStudent()
 void returningStudent(int idToCheck)// This function check student Id for existence 
 {
 	ifstream inFile;
-	StudentProfile studentPasswordCheck; // Function will check if inputed password and actual password are the same
-	char passwordToCheck[20];
+	StudentProfile checkedStudent; // Function will check if inputted password and actual password are the same
+	string storedPassword;
+	string passwordToCheck;
 	double currentWeight;
+
 	inFile.open("studentArchive.dat", ios::binary);
 	
 	if (!inFile)
@@ -118,23 +120,27 @@ void returningStudent(int idToCheck)// This function check student Id for existe
 		cin.get();
 		return;
 	}
+
 	bool flag = false;
-	while (inFile.read(reinterpret_cast<char*> (&studentPasswordCheck), sizeof(StudentProfile)))
+	while (inFile.read(reinterpret_cast<char*> (&checkedStudent), sizeof(StudentProfile)))
 	{
-		if (studentPasswordCheck.getId() == idToCheck)
+		if (checkedStudent.getId() == idToCheck)
 		{
 			cout << "Student found. Please Enter password:";
 			cin >> passwordToCheck;
-			if (strcmp(passwordToCheck, studentPasswordCheck.getPassword()) == 0) // Using strcmp for comparison
+
+			storedPassword = checkedStudent.getPassword();
+
+			if (passwordToCheck == storedPassword) 
 			{
 				cout << "\nAccess allowed. \n\tEnter your current weight: ";
 				cin >> currentWeight;
-				studentPasswordCheck.setWeight(currentWeight);
+				checkedStudent.setWeight(currentWeight);
 				cout << "\nYour Weight Updated. \n\tPress Enter key to continue";
 				cin.ignore();
 				cin.get();
 				
-				int determinedLine = studentPasswordCheck.getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
+				int determinedLine = checkedStudent.getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
 				studentMenu(determinedLine);
 			}
 			else
@@ -227,3 +233,36 @@ void displayAllStudents() //Function to display all students in the file in sort
 	cin.ignore();
 	cin.get();
 }
+
+
+/*void returnedStudentMenu(int) // previously used menu function
+{
+	double currentWeight;
+	char choice;
+	do
+	{
+		system("CLS");  // clear the screen
+		cout << "\n\t============STUDENT MENU========";
+		cout << "\n\n\t1. Enter your current weight";
+		cout << "\n\n\t2. View workout plan";
+		cout << "\n\n\t3. View diet plan";
+		cout << "\n\n\t4. Log Out.";
+
+		cout << "\n\n\tEnter your Choise(1 - 4): ";
+		cin >> choice;
+
+		switch (choice)
+		{
+		case '1':
+
+		case '2':
+			displayFileContent("workoutPlan.txt", determinedLine);
+			break;
+		case '3':
+		{
+			displayFileContent("dietPlan.txt", determinedLine);
+			break;
+		}
+		}
+	} while (choice != '4');
+}*/
