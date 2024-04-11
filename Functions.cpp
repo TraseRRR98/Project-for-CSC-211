@@ -227,36 +227,3 @@ void displayAllStudents() //Function to display all students in the file in sort
 	cin.ignore();
 	cin.get();
 }
-
-
-/*void returnedStudentMenu(int) // previously used menu function
-{
-	double currentWeight;
-	char choice;
-	do
-	{
-		system("CLS");  // clear the screen
-		cout << "\n\t============STUDENT MENU========";
-		cout << "\n\n\t1. Enter your current weight";
-		cout << "\n\n\t2. View workout plan";
-		cout << "\n\n\t3. View diet plan";
-		cout << "\n\n\t4. Log Out.";
-
-		cout << "\n\n\tEnter your Choise(1 - 4): ";
-		cin >> choice;
-
-		switch (choice)
-		{
-		case '1':
-
-		case '2':
-			displayFileContent("workoutPlan.txt", determinedLine);
-			break;
-		case '3':
-		{
-			displayFileContent("dietPlan.txt", determinedLine);
-			break;
-		}
-		}
-	} while (choice != '4');
-}*/
