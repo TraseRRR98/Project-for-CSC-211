@@ -83,3 +83,10 @@ void PersonProfile::setWeight(double new_weight)
 {
 	weight = new_weight;
 }
+
+
+
+
+
+
+
