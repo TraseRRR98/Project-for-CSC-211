@@ -15,10 +15,11 @@ private:
 public:
 	void addStudentInfo();
 	const char* getName();
-	int getId();
+	const int getId();
 	const char* getPassword();
-	double getBMI();
-	int getDietPlanLine();
+	const double getBMI();
+	const int getDietPlanLine();
+	void setId(int newID);
 	void setWeight(double new_weight);
 	friend ostream& operator<<(ostream& cout, const PersonProfile& studentProfile);
 };
