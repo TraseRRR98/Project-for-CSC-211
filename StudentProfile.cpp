@@ -1,49 +1,68 @@
-#include "StudentProfile.h"
+#include "PersonProfile.h"
 #include "Functions.h"
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include <string>
 
 using namespace std;
 
-void StudentProfile::addStudentInfo()
+
+void PersonProfile::addStudentInfo()
 {
 	cout << "\n\nPlease Enter your student ID: ";
-	cin >> id;
+	while (!(cin >> id))
+	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a valid ID number(has to be integer number): ";
+	}
+
 	cout << "\nPlease, Enter your name: ";
 	cin.ignore();
 	cin.getline(name, 40);
+
 	cout << "\nPlease, Enter your weight (in kg): ";
-	cin >> weight;
+	while (!(cin >> weight))
+	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a valid weight(has to be integer number): ";
+	}
+
 	cout << "\nPlease, Enter your height (in cm): ";
-	cin >> height;
+	while(!(cin >> height))
+	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Please enter a valid height(has to be integer number): ";
+	}
+
 	cout << "\nPlease, Create your password: ";
 	cin >> password;
 }
 
-const char* StudentProfile::getName()
+const char* PersonProfile::getName()
 {
 	return name;
 }
 
-int StudentProfile::getId()
+int PersonProfile::getId()
 {
 	return id;
 }
 
-const char* StudentProfile::getPassword()
+const char* PersonProfile::getPassword()
 {
 	return password;
 }
 
-double StudentProfile::getBMI()
+double PersonProfile::getBMI()
 {
 	return weight / (pow(height / 100, 2));
 }
 
 // Function to determine which line to read from file
-int StudentProfile::getDietPlanLine()
+int PersonProfile::getDietPlanLine()
 {
 	double bmi = getBMI();
 	if (bmi < 18.5) // line 1 have plan to gain weight
@@ -54,18 +73,13 @@ int StudentProfile::getDietPlanLine()
 	{
 		return 2;
 	}
-	else // line 2 have plan to loose weight
+	else // line 3 have plan to loose weight
 	{
 		return 3;
 	}
 }
 
-void StudentProfile::setWeight(double new_weight)
+void PersonProfile::setWeight(double new_weight)
 {
 	weight = new_weight;
 }
-
-
-
-
-
