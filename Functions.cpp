@@ -19,12 +19,12 @@ void showMainMenu() // Original Main menu
 		cout << "\n\n\t1. New Student";
 		cout << "\n\n\t2. Existing Student";
 		cout << "\n\n\t3. Exit";
-		//cout << "\n\n\t4. Display all students";
+		cout << "\n\n\t4. Display all students";
 		cout << "\n\n\tEnter your Choice (1 - 3): ";
 		cin >> choice;
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		while (choice != '1' && choice != '2' && choice != '3')
+		while (choice != '1' && choice != '2' && choice != '3' && choice !='4')
 		{
 			cout << "Wrong Input. Your choice has to be 1 - 3: ";
 			cin >> choice;
@@ -49,7 +49,7 @@ void showMainMenu() // Original Main menu
 		case '3':
 			cout << "\n\n\tThank you for using this program!\n\n";
 			exit(0);
-		case '$':
+		case '4':
 			displayAllStudents();
 			break;
 		}
@@ -102,25 +102,33 @@ void studentMenu(const int determinedLine)
 // Function called under option '1' in Main Menu
 void addStudent() 
 {
-	PersonProfile student;
-	student.addStudentInfo();
+	PersonProfile* student = new PersonProfile; // Dynamically creating student objects
+	student->addStudentInfo();
 	ofstream outFile;
 	outFile.open("studentArchive.dat", ios::binary | ios::app);
-	outFile.write(reinterpret_cast<char*> (&student), sizeof(PersonProfile));
+	if (!outFile)
+	{
+		cout << "Failed to open file for writing. \n";
+		delete student;
+		return;
+	}
+	outFile.write(reinterpret_cast<char*> (student), sizeof(PersonProfile));
 	outFile.close();
 	cout << "\n\nNew student added. \nPress Enter key continue and view your workout and diet plan. ";
 	cin.ignore();
 	cin.get();
 
-	int determinedLine = student.getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
+	int determinedLine = student->getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
 	studentMenu(determinedLine); // passing line to the menu
+	delete student;
 }
 
 //This function called after option '2' in Main Menu
 void returningStudent(int idToCheck)// This function check student Id for existence 
 {
 	ifstream inFile;
-	PersonProfile checkedStudent; // Function will check if inputted password and actual password are the same
+	// Function will check if inputted password and actual password are the same
+	PersonProfile* checkedStudent = new PersonProfile;
 	string storedPassword;
 	string passwordToCheck;
 	double currentWeight;
@@ -132,34 +140,35 @@ void returningStudent(int idToCheck)// This function check student Id for existe
 		cout << "\nFile could not be opened! \nPress Enter key to return to the main menu.";
 		cin.ignore();
 		cin.get();
+		delete checkedStudent;
 		return;
 	}
 
 	bool flag = false;
-	while (inFile.read(reinterpret_cast<char*> (&checkedStudent), sizeof(PersonProfile)))
+	while (inFile.read(reinterpret_cast<char*> (checkedStudent), sizeof(PersonProfile)))
 	{
-		if (checkedStudent.getId() == idToCheck)
+		if (checkedStudent->getId() == idToCheck)
 		{
 			cout << "Student found. Please Enter password:";
 			cin >> passwordToCheck;
-			storedPassword = checkedStudent.getPassword();
+			storedPassword = checkedStudent->getPassword();
 
 			system("CLS"); // clear the screen
 			if (passwordToCheck == storedPassword) 
 			{
-				cout << "\nAccess allowed. \n\tHello "<< checkedStudent.getName()<< "\n\t\tEnter your current weight : ";
+				cout << "\nAccess allowed. \n\tHello "<< checkedStudent->getName()<< "\n\t\tEnter your current weight : ";
 				while (!(cin >> currentWeight))
 				{
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 					cout << "Invalid input. Please enter valid number(has to be integer value): ";
 				}
-				checkedStudent.setWeight(currentWeight);
+				checkedStudent->setWeight(currentWeight);
 				cout << "\nYour Weight Updated. \n\tPress Enter key to continue";
 				cin.ignore();
 				cin.get();
 				
-				int determinedLine = checkedStudent.getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
+				int determinedLine = checkedStudent->getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
 				studentMenu(determinedLine);
 			}
 			else
@@ -175,9 +184,12 @@ void returningStudent(int idToCheck)// This function check student Id for existe
 	}
 	cout << "\n\tPress Enter to return to the main menu.";
 
+	
+
 	inFile.close();
 	cin.ignore();
 	cin.get();
+	delete checkedStudent;
 }
 
 void displayFileContent(const string& fileName, int lineNum) // reads and displays the content of the given file
@@ -258,3 +270,7 @@ ostream& operator<<(ostream& cout, const PersonProfile& studentProfile) // Overl
 	cout << "ID: " << studentProfile.id << " - Name: " << studentProfile.name << endl;
 	return cout;
 }
+
+
+
+
