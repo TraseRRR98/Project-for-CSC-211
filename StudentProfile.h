@@ -1,15 +1,16 @@
-#ifndef STUDENTPROFILE_H
-#define STUDENTPROFILE_H
+#ifndef PERSON_PROFILE_H
+#define PERSON_PROFILE_H
+#include <iostream>
 
-class StudentProfile
+using namespace std;
+
+class PersonProfile
 {
 private:
 	int id;
 	char name[40];
 	double weight; // in kg
 	double height; // in cm
-	//double age; 
-	//char sex; // 'M' for Male, 'F' for Female
 	char password[20];
 public:
 	void addStudentInfo();
@@ -19,8 +20,7 @@ public:
 	double getBMI();
 	int getDietPlanLine();
 	void setWeight(double new_weight);
-	
-
+	friend ostream& operator<<(ostream& cout, const PersonProfile& studentProfile);
 };
 
 
@@ -29,4 +29,4 @@ public:
 
 
 
-#endif STUDENT_PROFILE_H
+#endif PERSON_PROFILE_H
