@@ -97,7 +97,6 @@ void addStudent()
 	outFile.write(reinterpret_cast<char*> (student), sizeof(PersonProfile));
 	outFile.close();
 	cout << "\n\nNew student added. \nPress Enter key continue and view your workout and diet plan. ";
-	cin.ignore();
 	cin.get();
 
 	int determinedLine = student->getDietPlanLine();// Creating variable to pass the calculated line to newStudentMenu
@@ -385,7 +384,7 @@ void adminMenu()
 		{
 		case '1':
 		{
-			numberSearch = getValidatedIntInput("Enter the Student ID:", "Please enter a valid ID number(has to be positive integer number): ");
+			numberSearch = getValidatedIntInput("Enter the Student ID: ", "Please enter a valid ID number(has to be positive integer number): ");
 			displayStudent(numberSearch);
 			break;
 		}
@@ -395,11 +394,11 @@ void adminMenu()
 			displayStudent(toLower(nameSearch));
 			break;
 		case '3':
-			numberSearch = getValidatedIntInput("Enter the Student ID:", "Please enter a valid ID number(has to be positive integer number): ");
+			numberSearch = getValidatedIntInput("Enter the Student ID: ", "Please enter a valid ID number(has to be positive integer number): ");
 			deleteStudent(numberSearch);
 			break;
 		case '4':
-			numberSearch = getValidatedIntInput("Enter the Student ID:", "Please enter a valid ID number(has to be positive integer number): ");
+			numberSearch = getValidatedIntInput("Enter the Student ID: ", "Please enter a valid ID number(has to be positive integer number): ");
 			changeStudentInfo(numberSearch);
 			break;
 		case '5':
